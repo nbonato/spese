@@ -13,6 +13,10 @@ button {
 
 }
 
+button:active {
+background-color: red;
+}
+
 button:enabled {
     cursor: pointer;
 }
