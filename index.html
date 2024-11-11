@@ -3,16 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
-    <link rel="shortcut icon" href="icons/favicon.svg" >
-    <script src="main.js"></script>
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/icons/favicon.svg" >
     <title>Spese</title>
 </head>
 <body>
     <h1>Spese</h1>
 
-    <p>Start tracking your <em>spese</em> ("expenses" in Italian).</p>
+    <div id="expenses-controls">
+        <button id="addExpense">Add new expense</button>
+    </div>
 
+    <dialog id="expenseModal">
+        <form method="dialog">
+            <h2>Expense</h2>
+            <div>
+                <label for="expenseName">Name</label>
+                <input type="text" id="expenseName" name="expenseName">
+            </div>
+
+            
+            <div>
+                <label for="expenseType">Type</label>
+                <input list="expenseTypes" id="expenseType" name="expenseType">
+                <datalist id="expenseTypes">
+                </datalist>
+            </div>
+
+
+            <div>
+                <label for="expenseAmount">Amount</label>
+                <input type="number" id="expenseAmount" name="expenseAmount">
+            </div>
+
+            
+            <div>
+                <label for="expenseDate">Date</label>
+                <input type="date" name="expenseDate" id="expenseDate">
+            </div>
+
+            
+            <div>
+                <button class="delete">Delete</button>
+                <button class="confirm">Confirm</button>
+            </div>
+        </form>
+    </dialog>
+    
+    <p>Start tracking your <em>spese</em> ("expenses" in Italian).</p>
+    <div id="storage-controls">
+        <button id="clearButton">Clear All Expenses</button>
+        <button id="exportButton">Export Expenses as JSON</button>
+    </div>
+
+    <div id="expensesList">
+        
+    </div>
+
+
+
+    <script src="/scripts/app.js" type="module"></script>
 </body>
 </html>
