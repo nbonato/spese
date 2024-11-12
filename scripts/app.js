@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 let addExpenseButton = document.querySelector("#addExpense")
 let expenseModal = document.querySelector("#expenseModal")
 let expenseForm = document.querySelector("#expenseModal form")
+let expenseTypesDatalist = document.querySelector("#expenseTypes")
 
 let confirmAddExpense = document.querySelector("#expenseModal .confirm");
 
@@ -30,6 +31,11 @@ addExpenseButton.addEventListener("click", () => {
 })
 
 let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+let expenseTypesOptions = JSON.parse(localStorage.getItem("expenseTypesOptions")) || [];
+
+// Set default date for new expense to today
+document.getElementById('expenseDate').valueAsDate = new Date();
+
 
 confirmAddExpense.addEventListener("click", () => {
     
@@ -37,16 +43,25 @@ confirmAddExpense.addEventListener("click", () => {
     let formData = new FormData(expenseForm);
     let expense = {
         "name" : formData.get("expenseName"),
-        "type" : formData.get("expenseType"),
+        "type" : formData.get("expenseType").toLowerCase(),
         "amount" : parseFloat(formData.get("expenseAmount")),
         "date" : formData.get("expenseDate"),
+    }
+
+    if (!expenseTypesOptions.includes(expense.type)) {
+        // Fetch existing expensetypes from localStorage, add the new expense, and save back
+        expenseTypesOptions = JSON.parse(localStorage.getItem("expenseTypesOptions")) || [];
+        expenseTypesOptions.push(expense.type);
+        localStorage.setItem("expenseTypesOptions", JSON.stringify(expenseTypesOptions));
+        let option = document.createElement('option');
+        option.value = expense.type;
+        expenseTypesDatalist.appendChild(option)
     }
 
     // Fetch existing expenses from localStorage, add the new expense, and save back
     expenses = JSON.parse(localStorage.getItem("expenses")) || [];
     expenses.push(expense);
     localStorage.setItem("expenses", JSON.stringify(expenses));
-    console.log(expense)
     expenseForm.reset()
     populateExpenseList()
 })
@@ -61,4 +76,13 @@ function populateExpenseList() {
     }
 }
 
+function populateExpenseTypesList() {
+    for (let expenseType of expenseTypesOptions) {
+        let option = document.createElement('option');
+        option.value = expenseType;
+        expenseTypesDatalist.appendChild(option)
+    }
+}
+
 populateExpenseList()
+populateExpenseTypesList()
