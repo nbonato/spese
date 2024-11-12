@@ -43,8 +43,19 @@ form div {
     margin: 1rem 0;
 }
 
+
+#expensesList {
+    margin: 1rem 0;
+    width: fit-content;
+}
+
+
+
 #expensesList > li {
     border: solid 1px black;
     border-collapse: collapse;
     padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    
 }

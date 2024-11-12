@@ -73,7 +73,25 @@ function populateExpenseList() {
     expensesListContainer.innerHTML = ""
     for (let expense of expenses) {
         let expensesListItem = document.createElement('li');
-        expensesListItem.textContent = expense.name
+        
+        // Create a span for each property and set its textContent
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = expense.name;
+
+        const typeSpan = document.createElement("span");
+        typeSpan.textContent = expense.type;
+
+        const amountSpan = document.createElement("span");
+        amountSpan.textContent = `€${expense.amount.toFixed(2)}`; // Format amount as currency
+
+        const dateSpan = document.createElement("span");
+        dateSpan.textContent = expense.date;
+
+        // Append each span to the expensesListItem container
+        expensesListItem.appendChild(nameSpan);
+        expensesListItem.appendChild(typeSpan);
+        expensesListItem.appendChild(amountSpan);
+        expensesListItem.appendChild(dateSpan);
         expensesListContainer.appendChild(expensesListItem)
     }
 }
