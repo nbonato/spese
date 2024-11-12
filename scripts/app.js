@@ -33,12 +33,13 @@ addExpenseButton.addEventListener("click", () => {
 let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
 let expenseTypesOptions = JSON.parse(localStorage.getItem("expenseTypesOptions")) || [];
 
-// Set default date for new expense to today
-document.getElementById('expenseDate').valueAsDate = new Date();
-
 
 confirmAddExpense.addEventListener("click", () => {
     
+    // Set default date for new expense to today
+    document.getElementById('expenseDate').valueAsDate = new Date();
+
+
     // Parse the form data into an expense object
     let formData = new FormData(expenseForm);
     let expense = {
@@ -69,6 +70,7 @@ confirmAddExpense.addEventListener("click", () => {
 
 
 function populateExpenseList() {
+    expensesListContainer.innerHTML = ""
     for (let expense of expenses) {
         let expensesListItem = document.createElement('li');
         expensesListItem.textContent = expense.name
