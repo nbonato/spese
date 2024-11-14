@@ -100,3 +100,13 @@ form div {
 #expensesList tr:nth-child(2n) {
     background-color: rgb(228, 228, 228);
 }
+
+h1::before {
+    content: url("../icons/icon.svg");
+    display: inline-block; /* Ensures it displays inline with the heading */
+    width: 2rem;
+    height: 2rem;
+    margin-right: 5px;
+    vertical-align: -0.3rem;
+    
+}
