@@ -74,30 +74,50 @@ confirmAddExpense.addEventListener("click", () => {
 
 
 function populateExpenseList() {
-    expensesListContainer.innerHTML = ""
+    document.querySelector("#expensesList tbody").innerHTML = ""
     for (let expense of expenses) {
         
+        let expenseListRow = document.createElement('tr')
+
+        // Create a td for each property and set its textContent
+        const nameTd = document.createElement("td");
+        nameTd.textContent = expense.name;
+
+        const typeTd = document.createElement("td");
+        typeTd.textContent = expense.type;
+
+        const amountTd = document.createElement("td");
+        amountTd.textContent = `€${expense.amount.toFixed(2)}`; // Format amount as currency
+        amountTd.style.textAlign = 'right'
+        amountTd.style.paddingLeft = '1rem' // Avoid numbers being too long 
+
+        const dateTd = document.createElement("td");
+
+        const dateObject = new Date(expense.date)
+        // Format the date to display as "dd-mm"
+        const day = String(dateObject.getDate()).padStart(2, '0');    // Get day with leading zero
+        const month = dateObject.toLocaleString('default', { month: 'short' }); // Get abbreviated month name
+        
+        // Combine day and month
+        const formattedDate = `${day}-${month}`;
+
+
+
+        dateTd.textContent = formattedDate;
+        dateTd.style.textAlign = 'right'
+
+
         let expensesListItem = document.createElement('li');
         
-        // Create a span for each property and set its textContent
-        const nameSpan = document.createElement("span");
-        nameSpan.textContent = expense.name;
 
-        const typeSpan = document.createElement("span");
-        typeSpan.textContent = expense.type;
 
-        const amountSpan = document.createElement("span");
-        amountSpan.textContent = `€${expense.amount.toFixed(2)}`; // Format amount as currency
 
-        const dateSpan = document.createElement("span");
-        dateSpan.textContent = expense.date;
-
-        // Append each span to the expensesListItem container
-        expensesListItem.appendChild(nameSpan);
-        expensesListItem.appendChild(typeSpan);
-        expensesListItem.appendChild(amountSpan);
-        expensesListItem.appendChild(dateSpan);
-        expensesListContainer.appendChild(expensesListItem)
+        // Append each Td to the expensesListItem container
+        expenseListRow.appendChild(nameTd);
+        expenseListRow.appendChild(typeTd);
+        expenseListRow.appendChild(amountTd);
+        expenseListRow.appendChild(dateTd);
+        document.querySelector("#expensesList tbody").appendChild(expenseListRow)
     }
 }
 
