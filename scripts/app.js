@@ -5,8 +5,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Button for clearing expenses
     document.getElementById("clearButton").addEventListener("click", () => {
-        clearExpenses();
-        alert("All expenses cleared.");
+        if (window.confirm("Are you sure you want to delete all expenses? This is definitive, there is no backup")) {
+            clearExpenses();
+            alert("All expenses cleared.");
+            expenses = []
+            populateExpenseList()
+          }
+
     });
 
     // Button for exporting expenses
@@ -27,6 +32,8 @@ let confirmAddExpense = document.querySelector("#expenseModal .confirm");
 let expensesListContainer = document.querySelector("#expensesList")
 
 addExpenseButton.addEventListener("click", () => {
+    // Set default date for new expense to today
+    document.getElementById('expenseDate').valueAsDate = new Date();
     expenseModal.show()
 })
 
@@ -35,9 +42,6 @@ let expenseTypesOptions = JSON.parse(localStorage.getItem("expenseTypesOptions")
 
 
 confirmAddExpense.addEventListener("click", () => {
-    
-    // Set default date for new expense to today
-    document.getElementById('expenseDate').valueAsDate = new Date();
 
 
     // Parse the form data into an expense object
@@ -72,6 +76,7 @@ confirmAddExpense.addEventListener("click", () => {
 function populateExpenseList() {
     expensesListContainer.innerHTML = ""
     for (let expense of expenses) {
+        
         let expensesListItem = document.createElement('li');
         
         // Create a span for each property and set its textContent
