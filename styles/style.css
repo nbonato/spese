@@ -11,6 +11,10 @@
     margin: auto;
 }
 
+dialog {
+    z-index: 99;
+}
+
 #clearButton {
     background-color: red;
 }
@@ -20,11 +24,7 @@ body {
     width: 90vw;
 }
 
-@media (orientation: landscape) {  
-    body {
-        max-width: 80vw;
-    }    
-}
+
 button {
     padding: 0.8rem;
     font-size: 1rem;
@@ -35,7 +35,7 @@ button {
     font-weight: bold;
 }
 
-button:active {
+button:enabled:active {
     transform: scale(0.95);
 }
 
@@ -110,4 +110,46 @@ h1::before {
     margin-right: 5px;
     vertical-align: -0.3rem;
     
+}
+
+
+/* Display different buttons based on orientation */
+@media (orientation: landscape) {  
+    body {
+        max-width: 80vw;
+    }    
+    .portrait {
+        display: none;
+    }
+}
+
+@media (orientation: portrait) {
+    .landscape {
+        display: none;
+    }
+    .expenses-controls {
+        position: fixed;
+        bottom: 2%;
+        translate: -50%;
+        left: 50%;
+    }
+    #expenseModal input {
+        font-size: 120%;
+        width: 100%;
+        padding: 2px 0;
+        margin: 2px 0;
+        border: 0;
+    }
+    
+    #expenseModal {
+        font-size: 120%;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        background-color: rgb(231, 231, 231);
+        padding: 1rem;
+        width: 100%;
+        border: 0;
+        box-sizing: border-box;
+    }
 }

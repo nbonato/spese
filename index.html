@@ -14,30 +14,32 @@
         <h1>Spese</h1>
         <p>Start tracking your <em title="'Expenses' in Italian" style="text-decoration: underline dotted;">spese</em>.</p>
 
-        <div id="expenses-controls">
-            <button id="addExpense">Add new expense</button>
+        <div class="expenses-controls landscape">
+            <button class="addExpense">Add new expense</button>
         </div>
+
+
         <dialog id="expenseModal">
             <form method="dialog">
                 <h2>Expense</h2>
                 <div>
-                    <label for="expenseName">Name</label>
+                    <label for="expenseName">Name</label><br>
                     <input type="text" id="expenseName" name="expenseName">
                 </div>
         
                 <div>
-                    <label for="expenseType">Type</label>
+                    <label for="expenseType">Type</label><br>
                     <input list="expenseTypes" id="expenseType" name="expenseType" autocomplete="off">
                     <datalist id="expenseTypes">
                     </datalist>
                 </div>
                 <div>
-                    <label for="expenseAmount">Amount</label>
+                    <label for="expenseAmount">Amount</label><br>
                     <input type="number" id="expenseAmount" name="expenseAmount">
                 </div>
         
                 <div>
-                    <label for="expenseDate">Date</label>
+                    <label for="expenseDate">Date</label><br>
                     <input type="date" name="expenseDate" id="expenseDate">
                 </div>
         
@@ -69,7 +71,7 @@
             <button id="clearButton">Clear all expenses</button>
 
         </div>
- 
+
         <dialog id="importModal">
             <form method="dialog">
                 <h2>Import expenses</h2>
@@ -87,6 +89,10 @@
                 </div>
             </form>
         </dialog>
+
+        <div class="expenses-controls">
+            <button class="addExpense portrait" >Add new expense</button>
+        </div>
     </div>
 
 

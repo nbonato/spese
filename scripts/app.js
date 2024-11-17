@@ -1,4 +1,4 @@
-import { initializeExpenses, clearExpenses, exportExpenses } from './storage.js';
+import { initializeExpenses, clearExpenses, exportExpenses, importExpenses } from './storage.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     initializeExpenses();
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-let addExpenseButton = document.querySelector("#addExpense")
+let addExpenseButton = document.querySelectorAll(".addExpense")
 let expenseModal = document.querySelector("#expenseModal")
 let expenseForm = document.querySelector("#expenseModal form")
 let expenseTypesDatalist = document.querySelector("#expenseTypes")
@@ -43,11 +43,13 @@ let importModal = document.querySelector("#importModal")
 
 
 
-addExpenseButton.addEventListener("click", () => {
-    // Set default date for new expense to today
-    document.getElementById('expenseDate').valueAsDate = new Date();
-    expenseModal.show()
-})
+addExpenseButton.forEach(button => {
+    button.addEventListener("click", () => {
+        // Set default date for new expense to today
+        document.getElementById('expenseDate').valueAsDate = new Date();
+        expenseModal.show();
+    });
+});
 
 let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
 let expenseTypesOptions = JSON.parse(localStorage.getItem("expenseTypesOptions")) || [];
@@ -138,7 +140,7 @@ function populateExpenseList() {
 
 
         dateTd.textContent = formattedDate;
-        dateTd.style.textAlign = 'right'
+        dateTd.style.textAlign = 'right'        
 
         // Append each Td to the expensesListItem container
         expenseListRow.appendChild(nameTd);
