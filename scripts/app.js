@@ -19,6 +19,11 @@ document.addEventListener("DOMContentLoaded", () => {
         exportExpenses();
         alert("Expenses exported successfully.");
     });
+
+    // Button for importing expenses
+    document.getElementById("importButton").addEventListener("click", () => {
+        importModal.showModal()
+    });
 });
 
 
@@ -30,6 +35,13 @@ let expenseTypesDatalist = document.querySelector("#expenseTypes")
 let confirmAddExpense = document.querySelector("#expenseModal .confirm");
 
 let expensesListContainer = document.querySelector("#expensesList")
+
+let jsonImport = document.getElementById("importExpenses")
+jsonImport.value = null
+
+let importModal = document.querySelector("#importModal")
+
+
 
 addExpenseButton.addEventListener("click", () => {
     // Set default date for new expense to today
@@ -72,6 +84,28 @@ confirmAddExpense.addEventListener("click", () => {
 })
 
 
+jsonImport.addEventListener("change", function() {
+    // Enable button when file is uploaded
+    importModal.querySelector(".confirm").disabled = false;
+});
+
+// Button for importing expenses
+importModal.querySelector(".confirm").addEventListener("click", () => {
+    if (window.confirm("Are you sure you want to import? This will delete all current expenses. This is definitive, there is no backup")) {
+        importExpenses(jsonImport)
+            .then((jsonData) => {
+                expenses = jsonData; // Assign parsed data to expenses
+                localStorage.setItem("expenses", JSON.stringify(expenses));
+                populateExpenseList()
+                jsonImport.value = null
+            })
+            .catch((error) => {
+                console.error(error); // Handle error if something goes wrong
+            });
+        
+    }
+});
+
 
 function populateExpenseList() {
     document.querySelector("#expensesList tbody").innerHTML = ""
@@ -105,12 +139,6 @@ function populateExpenseList() {
 
         dateTd.textContent = formattedDate;
         dateTd.style.textAlign = 'right'
-
-
-        let expensesListItem = document.createElement('li');
-        
-
-
 
         // Append each Td to the expensesListItem container
         expenseListRow.appendChild(nameTd);

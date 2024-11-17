@@ -23,3 +23,27 @@ export function exportExpenses() {
 
     URL.revokeObjectURL(url);
 }
+
+
+export function importExpenses(inputNode) {
+    return new Promise((resolve, reject) => {
+        const file = inputNode.files[0];
+
+        if (file && file.type === 'application/json') {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const jsonData = JSON.parse(e.target.result); // Convert JSON text to object
+                    resolve(jsonData); // Resolve the promise with jsonData
+                } catch (error) {
+                    reject("Error parsing JSON:", error); // Reject if there's an error
+                }
+            };
+            
+            reader.readAsText(file); // Read the file as text
+        } else {
+            reject("Please upload a valid JSON file."); // Reject if file type is not JSON
+        }
+    });
+}
