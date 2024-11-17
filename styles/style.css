@@ -43,8 +43,9 @@ button:enabled {
     cursor: pointer;
 }
 
-button:disabled {
+button.confirm:disabled {
     cursor: auto;
+    background-color: gray;
 }
 
 button.confirm {
