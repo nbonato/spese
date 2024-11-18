@@ -1,3 +1,4 @@
+import { convertFormToExpense, updateExpense } from './manageExpense.js';
 import { initializeExpenses, clearExpenses, exportExpenses, importExpenses, refreshExpenseTypes } from './storage.js';
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -56,30 +57,7 @@ let expenseTypesOptions = JSON.parse(localStorage.getItem("expenseTypesOptions")
 
 
 confirmAddExpense.addEventListener("click", () => {
-
-
-    // Parse the form data into an expense object
-    let formData = new FormData(expenseForm);
-    let expense = {
-        "name" : formData.get("expenseName"),
-        "type" : formData.get("expenseType").toLowerCase(),
-        "amount" : parseFloat(formData.get("expenseAmount")),
-        "date" : formData.get("expenseDate"),
-    }
-
-
-    if (!expenseTypesOptions.includes(expense.type)) {
-        // Fetch existing expensetypes from localStorage, add the new expense, and save back
-        expenseTypesOptions = JSON.parse(localStorage.getItem("expenseTypesOptions")) || [];
-        expenseTypesOptions.push(expense.type);
-        populateExpenseTypesList()
-    }
-
-    // Fetch existing expenses from localStorage, add the new expense, and save back
-    expenses = JSON.parse(localStorage.getItem("expenses")) || [];
-    expenses.push(expense);
-    localStorage.setItem("expenses", JSON.stringify(expenses));
-    expenseForm.reset()
+    convertFormToExpense(expenseForm, expenses, expenseTypesOptions)    
     populateExpenseList()
 })
 
@@ -108,8 +86,9 @@ importModal.querySelector(".confirm").addEventListener("click", () => {
 
 
 function populateExpenseList() {
+    expenses = JSON.parse(localStorage.getItem("expenses")) || [];
     document.querySelector("#expensesList tbody").innerHTML = ""
-    for (let expense of expenses) {
+    for (let [index, expense] of expenses.entries()) {
         
         let expenseListRow = document.createElement('tr')
 
@@ -145,6 +124,9 @@ function populateExpenseList() {
         expenseListRow.appendChild(typeTd);
         expenseListRow.appendChild(amountTd);
         expenseListRow.appendChild(dateTd);
+
+        
+        expenseListRow.addEventListener("click", (event) => updateExpense(event, expense, index, expenses, expenseTypesOptions))
         document.querySelector("#expensesList tbody").appendChild(expenseListRow)
     }
 }
@@ -160,7 +142,6 @@ function populateExpenseTypesList() {
         expenseTypesDatalist.appendChild(option)
     }
 }
-
 
 
 let expenseTypeInput = document.querySelector("#expenseType")
@@ -201,8 +182,8 @@ function updateExpenseTypes() {
 
 function initialiseAppContent() {
     updateExpenseTypes()
-populateExpenseList()
-populateExpenseTypesList()
+    populateExpenseList()
+    populateExpenseTypesList()
 }
 
 initialiseAppContent()
