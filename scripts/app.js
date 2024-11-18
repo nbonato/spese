@@ -1,4 +1,4 @@
-import { initializeExpenses, clearExpenses, exportExpenses, importExpenses } from './storage.js';
+import { initializeExpenses, clearExpenses, exportExpenses, importExpenses, refreshExpenseTypes } from './storage.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     initializeExpenses();
@@ -67,14 +67,12 @@ confirmAddExpense.addEventListener("click", () => {
         "date" : formData.get("expenseDate"),
     }
 
+
     if (!expenseTypesOptions.includes(expense.type)) {
         // Fetch existing expensetypes from localStorage, add the new expense, and save back
         expenseTypesOptions = JSON.parse(localStorage.getItem("expenseTypesOptions")) || [];
         expenseTypesOptions.push(expense.type);
-        localStorage.setItem("expenseTypesOptions", JSON.stringify(expenseTypesOptions));
-        let option = document.createElement('option');
-        option.value = expense.type;
-        expenseTypesDatalist.appendChild(option)
+        populateExpenseTypesList()
     }
 
     // Fetch existing expenses from localStorage, add the new expense, and save back
@@ -98,7 +96,7 @@ importModal.querySelector(".confirm").addEventListener("click", () => {
             .then((jsonData) => {
                 expenses = jsonData; // Assign parsed data to expenses
                 localStorage.setItem("expenses", JSON.stringify(expenses));
-                populateExpenseList()
+                initialiseAppContent()
                 jsonImport.value = null
             })
             .catch((error) => {
@@ -120,7 +118,7 @@ function populateExpenseList() {
         nameTd.textContent = expense.name;
 
         const typeTd = document.createElement("td");
-        typeTd.textContent = expense.type;
+        typeTd.textContent = expense.type.trim();
 
         const amountTd = document.createElement("td");
         amountTd.textContent = `€${expense.amount.toFixed(2)}`; // Format amount as currency
@@ -152,12 +150,59 @@ function populateExpenseList() {
 }
 
 function populateExpenseTypesList() {
+    expenseTypesDatalist.innerHTML = ""
+    localStorage.setItem("expenseTypesOptions", JSON.stringify(expenseTypesOptions));
+
     for (let expenseType of expenseTypesOptions) {
-        let option = document.createElement('option');
-        option.value = expenseType;
+        let option = document.createElement('li');
+        option.textContent = expenseType;
+        option.addEventListener("click", () => {expenseTypeInput.value = expenseType})
         expenseTypesDatalist.appendChild(option)
     }
 }
 
+
+
+let expenseTypeInput = document.querySelector("#expenseType")
+
+expenseTypeInput.addEventListener("click", (event) => {
+    event.stopPropagation(); // Prevent the click event from propagating to the document
+    displayExpenseTypesOptions();
+});
+
+function displayExpenseTypesOptions() {
+    expenseTypesDatalist.style.display = "flex";
+
+    // Add a click listener to the document to handle clicks outside
+    document.addEventListener("click", hideExpenseTypesOptions);
+}
+
+function hideExpenseTypesOptions(event) {
+    // Check if the click is outside the datalist and input field
+    if (
+        event.target !== expenseTypesDatalist &&
+        !expenseTypesDatalist.contains(event.target) &&
+        event.target !== expenseTypeInput
+    ) {
+        expenseTypesDatalist.style.display = "none";
+        document.removeEventListener("click", hideExpenseTypesOptions); // Clean up the event listener
+    }
+}
+
+
+
+
+function updateExpenseTypes() {
+    expenseTypesOptions = refreshExpenseTypes(expenses)
+    localStorage.setItem("expenseTypesOptions", JSON.stringify(expenseTypesOptions));
+    populateExpenseTypesList()
+}
+
+
+function initialiseAppContent() {
+    updateExpenseTypes()
 populateExpenseList()
 populateExpenseTypesList()
+}
+
+initialiseAppContent()

@@ -88,7 +88,6 @@ form div {
 }
 
 
-
 #expensesList td {
     max-width: 25%;         /* Set a max width for the cell */
     white-space: nowrap;      /* Prevent text from wrapping */
@@ -101,6 +100,38 @@ form div {
 #expensesList tr:nth-child(2n) {
     background-color: rgb(228, 228, 228);
 }
+
+
+#expenseTypes {
+    max-width: 100%;
+    border: 1px solid;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+    font-size: 120%;
+    width: 100%;
+    padding: 2px;
+    border: 0;
+    background-color: white;
+    display: none;
+    box-sizing: border-box;
+}
+
+#expenseTypes li {
+    list-style-type: none;
+    padding: 0;
+    max-width: 4rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: rgb(107, 179, 207); 
+    color: rgb(28, 80, 101);  
+    border-radius: 8px;
+    padding: 2px 8px;
+    margin: 2px;
+    cursor: pointer;
+}
+
 
 h1::before {
     content: url("../icons/icon.svg");

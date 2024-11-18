@@ -47,3 +47,9 @@ export function importExpenses(inputNode) {
         }
     });
 }
+
+
+export function refreshExpenseTypes(expenses) {
+    const uniqueTypes = [...new Set(expenses.map(expense => expense.type.trim()))];
+    return uniqueTypes
+}
