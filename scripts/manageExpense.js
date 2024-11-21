@@ -1,3 +1,5 @@
+import { addExpenseToTable } from "./expenseList.js";
+
 // Mapping object
 const fieldMapping = {
     name: "expenseName",
@@ -5,6 +7,12 @@ const fieldMapping = {
     amount: "expenseAmount",
     date: "expenseDate"
 };
+
+export function addExpense(expenseForm, expenses) {
+    const expense = convertFormToExpense(expenseForm)   
+    expenses.push(expense)
+    addExpenseToTable(expense)
+}
 
 export function updateExpense(event, expense, index, expenses, expenseTypesOptions) {
     const expenseForm = expenseModal.querySelector("form")
@@ -27,17 +35,25 @@ export function updateExpense(event, expense, index, expenses, expenseTypesOptio
 }
 
 
-export function convertFormToExpense(expenseForm, expenses, expenseTypesOptions, index = false) {
+
+/**
+ * Convert the content of the expenseModal into an expense
+ * @param {Node} expenseForm   The form from the expenseModal
+ * @returns {Object}           An object representing an expense
+ */
+export function convertFormToExpense(expenseForm) {
     // Parse the form data into an expense object
     let formData = new FormData(expenseForm);
     let expense = {
+        "id" : Date.now(),
         "name" : formData.get("expenseName"),
         "type" : formData.get("expenseType").toLowerCase(),
         "amount" : parseFloat(formData.get("expenseAmount")),
         "date" : formData.get("expenseDate"),
     }
-
-
+    expenseForm.reset()
+    return expense
+/* 
     if (!expenseTypesOptions.includes(expense.type)) {
         // Fetch existing expensetypes from localStorage, add the new expense, and save back
         expenseTypesOptions = JSON.parse(localStorage.getItem("expenseTypesOptions")) || [];
@@ -54,6 +70,6 @@ export function convertFormToExpense(expenseForm, expenses, expenseTypesOptions,
         // Add the new expense
         expenses.push(expense);
     }
-    localStorage.setItem("expenses", JSON.stringify(expenses));
-    expenseForm.reset()
+    localStorage.setItem("expenses", JSON.stringify(expenses)); */
+    
 }
