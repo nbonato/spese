@@ -154,6 +154,38 @@ h1::before {
     }
 }
 
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: rgb(16, 16, 16);
+        color: white;
+    }
+    h1::before {
+        filter: invert(100%);
+    }
+    #expensesList tr:nth-child(2n) {
+        background-color: rgb(56, 56, 56);
+    }
+
+    #expensesList thead {
+        background-color: rgb(16, 16, 16);
+    }
+
+    button {
+        color: black;
+        background-color: white;
+    }
+
+    button.delete {
+        color: white;
+    }
+
+    #clearButton {
+        color: white;
+    }
+
+
+}
+
 @media (orientation: portrait) {
     .landscape {
         display: none;
