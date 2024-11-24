@@ -9,8 +9,9 @@ const fieldMapping = {
 };
 
 export function addExpense(expenseForm, expenses) {
-    const expense = convertFormToExpense(expenseForm)   
+    const expense = convertFormToExpense(expenseForm) 
     expenses.push(expense)
+    localStorage.setItem("expenses", JSON.stringify(expenses));
     addExpenseToTable(expense)
 }
 
