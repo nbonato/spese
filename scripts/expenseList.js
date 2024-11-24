@@ -1,8 +1,11 @@
+import { updateMonthlyExpensesDisplay } from "./overviews.js";
+
 export function populateExpenseList(expenses) {
     document.querySelector("#expensesList tbody").innerHTML = ""
     for (let expense of expenses) {
         addExpenseToTable(expense, expenses)
     }
+    updateMonthlyExpensesDisplay(expenses)
 }
 
 
@@ -48,7 +51,7 @@ export function addExpenseToTable(expense, expenses) {
     expenseListRow.appendChild(dateTd);
 
 
-    expenseListRow.addEventListener("click", () => editExpense(expense, expenses))
+    // expenseListRow.addEventListener("click", () => editExpense(expense, expenses))
 
 
     // Adppend the row to the table 
