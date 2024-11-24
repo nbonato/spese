@@ -25,19 +25,52 @@ export function updateMonthlyExpensesDisplay(expenses) {
     let grouped = Object.groupBy(expenses, expenseMonth);
     grouped = grouped[new Date().getMonth()+1]
     categoriseExpenses(expenses)
-    expenseDisplay.textContent = `Total expenses this month: ${sumProperty(grouped).toFixed(2)}`
+    expenseDisplay.querySelector(".total").textContent = `Total expenses this month: ${sumProperty(grouped).toFixed(2)}`
 }
 
 
 function categoriseExpenses(expenses) {
     const categorised = Object.groupBy(expenses, ({ type }) => type.trim());
     // Iterate over each category and sum the property
-    for (const [category, expensesArray] of Object.entries(categorised)) {
+
+    // First, create an array of [category, total] pairs and sort it by total
+    const sortedCategories = Object.entries(categorised).map(([category, expensesArray]) => {
         const total = sumProperty(expensesArray);
-        console.log(`${category}:`, total.toFixed(2));
+        return [category, total];
+    }).sort((a, b) => b[1] - a[1]);  // Sort in descending order by total (b[1] - a[1])
+
+    // Then, iterate through the sorted array and log/append to the table
+    for (const [category, total] of sortedCategories) {
+        addCategoryToTable(category, total);
     }
 
 }
+
+
+function addCategoryToTable(category, total) {
+    
+    const categoriesTable = document.querySelector("#categories tbody");
+
+    let categoriesRow = document.createElement('tr')
+
+    // Create a td for each property and set its textContent
+    const typeTd = document.createElement("td");
+    typeTd.textContent = category;
+
+    const amountTd = document.createElement("td");
+    amountTd.textContent = `€${total.toFixed(2)}`; // Format amount as currency
+    amountTd.style.textAlign = 'right'
+    amountTd.style.paddingLeft = '1rem' // Avoid numbers being too long 
+
+    // Append each td to the categoriesRow
+    categoriesRow.appendChild(typeTd);
+    categoriesRow.appendChild(amountTd);
+
+
+    // Adppend the row to the table 
+    categoriesTable.appendChild(categoriesRow)
+}
+
 
 
 /**

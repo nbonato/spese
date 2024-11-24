@@ -64,31 +64,39 @@ form div {
     margin: 1rem 0;
 }
 
-#expensesListContainer {
+#expensesListContainer, #overview-display {
     height: 30vh;
     margin: 1rem 0;
     overflow: scroll;
 }
 
-#expensesList {
+#overview-display .total {
+    font-weight: bold;
+}
+
+details {
+    margin: 1rem 0;
+}
+
+table {
     width: 100%;
     table-layout: fixed;
     border-collapse: collapse 
 }
 
-#expensesList thead {
+thead {
     position: sticky;
     top: 0;
     background-color: white;
     box-shadow: 0px 2px 5px #8080803b;
 }
 
-#expensesList th {
+th {
     padding: 0.5rem 0;
 }
 
 
-#expensesList td {
+td {
     max-width: 25%;         /* Set a max width for the cell */
     white-space: nowrap;      /* Prevent text from wrapping */
     overflow: hidden;         /* Hide any overflow */
@@ -102,7 +110,7 @@ form div {
 }
 
 
-#expensesList tr:nth-child(2n) {
+table tr:nth-child(2n) {
     background-color: rgb(228, 228, 228);
 }
 
@@ -147,12 +155,8 @@ h1::before {
     vertical-align: -0.3rem;
 }
 
-#overview-display {
-    color: red;
-    border: 2px red;
-    margin: 2rem;
-    text-align: center;
-}
+
+
 
 
 /* Display different buttons based on orientation */

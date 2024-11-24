@@ -67,33 +67,49 @@
             </table>
         </div>
 
-        <div id="overview-display">
+
+        <details name="alternativeDetails" open>
+            <summary>Overview</summary>
+            <div id="overview-display">
+                <table id="categories">
+                    <thead>
+                        <tr>
+                            <th colspan="2" class="total"></th>
+                        </tr>
+
+
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </details>
+        <details name="alternativeDetails">
+            <summary>Settings</summary>
             
-        </div>
-        <div id="storage-controls">
-            <button id="exportButton">Export expenses as JSON</button>
-            <button id="importButton">Import and overwrite expenses</button>
-            <button id="clearButton">Clear all expenses</button>
-
-        </div>
-
-        <dialog id="importModal">
-            <form method="dialog">
-                <h2>Import expenses</h2>
-                <p>Upload your expenses in JSON format.</p>
-                <p><strong>Careful!</strong> This will overwrite all current expenses.</p>
-                
-                <div>
-                    <input type="file" name="importExpenses" id="importExpenses">
-                </div>
-
-        
-                <div>
-                    <button class="delete">Cancel</button>
-                    <button class="confirm" disabled autocomplete="off">Import</button>
-                </div>
-            </form>
-        </dialog>
+            <div id="storage-controls">
+                <button id="exportButton">Export expenses as JSON</button>
+                <button id="importButton">Import and overwrite expenses</button>
+                <button id="clearButton">Clear all expenses</button>
+            </div>
+            <dialog id="importModal">
+                <form method="dialog">
+                    <h2>Import expenses</h2>
+                    <p>Upload your expenses in JSON format.</p>
+                    <p><strong>Careful!</strong> This will overwrite all current expenses.</p>
+            
+                    <div>
+                        <input type="file" name="importExpenses" id="importExpenses">
+                    </div>
+            
+                    <div>
+                        <button class="delete">Cancel</button>
+                        <button class="confirm" disabled autocomplete="off">Import</button>
+                    </div>
+                </form>
+            </dialog>
+        </details>
 
         <div class="expenses-controls">
             <button class="addExpense portrait" >Add new expense</button>
