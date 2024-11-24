@@ -94,6 +94,11 @@ form div {
     overflow: hidden;         /* Hide any overflow */
     text-overflow: ellipsis;  /* Show ellipsis (...) */
     padding: 0.4rem 0.2rem;
+    cursor: pointer;
+}
+
+#expensesList tr:hover {
+    text-decoration: underline;
 }
 
 

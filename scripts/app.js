@@ -1,3 +1,5 @@
+import { populateExpenseList } from './expenseList.js';
+import { addExpense, convertFormToExpense, updateExpense } from './manageExpense.js';
 import { initializeExpenses, clearExpenses, exportExpenses, importExpenses, refreshExpenseTypes } from './storage.js';
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -9,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
             clearExpenses();
             alert("All expenses cleared.");
             expenses = []
-            populateExpenseList()
+            populateExpenseList(expenses)
           }
 
     });
@@ -31,10 +33,9 @@ let addExpenseButton = document.querySelectorAll(".addExpense")
 let expenseModal = document.querySelector("#expenseModal")
 let expenseForm = document.querySelector("#expenseModal form")
 let expenseTypesDatalist = document.querySelector("#expenseTypes")
+let expensesListTable = document.querySelector("#expensesList tbody")
 
 let confirmAddExpense = document.querySelector("#expenseModal .confirm");
-
-let expensesListContainer = document.querySelector("#expensesList")
 
 let jsonImport = document.getElementById("importExpenses")
 jsonImport.value = null
@@ -47,7 +48,7 @@ addExpenseButton.forEach(button => {
     button.addEventListener("click", () => {
         // Set default date for new expense to today
         document.getElementById('expenseDate').valueAsDate = new Date();
-        expenseModal.show();
+        expenseModal.showModal();
     });
 });
 
@@ -55,33 +56,15 @@ let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
 let expenseTypesOptions = JSON.parse(localStorage.getItem("expenseTypesOptions")) || [];
 
 
+
 confirmAddExpense.addEventListener("click", () => {
-
-
-    // Parse the form data into an expense object
-    let formData = new FormData(expenseForm);
-    let expense = {
-        "name" : formData.get("expenseName"),
-        "type" : formData.get("expenseType").toLowerCase(),
-        "amount" : parseFloat(formData.get("expenseAmount")),
-        "date" : formData.get("expenseDate"),
-    }
-
-
-    if (!expenseTypesOptions.includes(expense.type)) {
-        // Fetch existing expensetypes from localStorage, add the new expense, and save back
-        expenseTypesOptions = JSON.parse(localStorage.getItem("expenseTypesOptions")) || [];
-        expenseTypesOptions.push(expense.type);
-        populateExpenseTypesList()
-    }
-
-    // Fetch existing expenses from localStorage, add the new expense, and save back
-    expenses = JSON.parse(localStorage.getItem("expenses")) || [];
-    expenses.push(expense);
-    localStorage.setItem("expenses", JSON.stringify(expenses));
-    expenseForm.reset()
-    populateExpenseList()
+    addExpense(expenseForm, expenses)
 })
+
+/* confirmAddExpense.addEventListener("click", () => {
+    expenses.push(convertFormToExpense(expenseForm))
+    addExpenseToTable(convertFormToExpense(expenseForm))
+}) */
 
 
 jsonImport.addEventListener("change", function() {
@@ -107,47 +90,6 @@ importModal.querySelector(".confirm").addEventListener("click", () => {
 });
 
 
-function populateExpenseList() {
-    document.querySelector("#expensesList tbody").innerHTML = ""
-    for (let expense of expenses) {
-        
-        let expenseListRow = document.createElement('tr')
-
-        // Create a td for each property and set its textContent
-        const nameTd = document.createElement("td");
-        nameTd.textContent = expense.name;
-
-        const typeTd = document.createElement("td");
-        typeTd.textContent = expense.type.trim();
-
-        const amountTd = document.createElement("td");
-        amountTd.textContent = `€${expense.amount.toFixed(2)}`; // Format amount as currency
-        amountTd.style.textAlign = 'right'
-        amountTd.style.paddingLeft = '1rem' // Avoid numbers being too long 
-
-        const dateTd = document.createElement("td");
-
-        const dateObject = new Date(expense.date)
-        // Format the date to display as "dd-mm"
-        const day = String(dateObject.getDate()).padStart(2, '0');    // Get day with leading zero
-        const month = dateObject.toLocaleString('default', { month: 'short' }); // Get abbreviated month name
-        
-        // Combine day and month
-        const formattedDate = `${day}-${month}`;
-
-
-
-        dateTd.textContent = formattedDate;
-        dateTd.style.textAlign = 'right'        
-
-        // Append each Td to the expensesListItem container
-        expenseListRow.appendChild(nameTd);
-        expenseListRow.appendChild(typeTd);
-        expenseListRow.appendChild(amountTd);
-        expenseListRow.appendChild(dateTd);
-        document.querySelector("#expensesList tbody").appendChild(expenseListRow)
-    }
-}
 
 function populateExpenseTypesList() {
     expenseTypesDatalist.innerHTML = ""
@@ -160,7 +102,6 @@ function populateExpenseTypesList() {
         expenseTypesDatalist.appendChild(option)
     }
 }
-
 
 
 let expenseTypeInput = document.querySelector("#expenseType")
@@ -201,8 +142,9 @@ function updateExpenseTypes() {
 
 function initialiseAppContent() {
     updateExpenseTypes()
-populateExpenseList()
-populateExpenseTypesList()
+    populateExpenseList(expenses)
+    populateExpenseTypesList()
 }
 
 initialiseAppContent()
+
