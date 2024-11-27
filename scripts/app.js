@@ -89,11 +89,8 @@ importModal.querySelector(".confirm").addEventListener("click", () => {
 });
 
 
-
-
-
 function initialiseAppContent() {
-    initialiseExpenseTypeInput()
+    initialiseExpenseTypeInput(expenseTypesOptions)
     updateExpenseTypes(expenses, expenseTypesOptions)
     populateExpenseList(expenses)
 }

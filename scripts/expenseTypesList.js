@@ -2,11 +2,12 @@ let expenseTypesDatalist = document.querySelector("#expenseTypes")
 let expenseTypeInput = document.querySelector("#expenseType")
 
 
-export function initialiseExpenseTypeInput() {
+export function initialiseExpenseTypeInput(expenseTypesOptions) {
     expenseTypeInput.addEventListener("click", (event) => {
         event.stopPropagation(); // Prevent the click event from propagating to the document
         displayExpenseTypesOptions();
     });
+    expenseTypeInput.addEventListener("input", (event) => selectExpenseType(event, expenseTypesOptions))
 }
 
 
@@ -56,5 +57,19 @@ export function displayExpenseTypesOptions() {
     // Add a click listener to the document to handle clicks outside
     document.addEventListener("click", (event) => hideExpenseTypesOptions(event));
 }
+
+/**
+ * Implements filter-as-you-type for the epxense types field 
+ * @param {Event} event                 The input event on the expense types field
+ * @param {Array} expenseTypesOptions   All available expense types
+ */
+export function selectExpenseType(event, expenseTypesOptions) {
+    let currentInput = event.target.value
+    let filteredTypes = expenseTypesOptions.filter((type) => 
+        type.toLowerCase().includes(currentInput.toLowerCase())
+    )
+    populateExpenseTypesList(filteredTypes)    
+}
+
 
 
