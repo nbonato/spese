@@ -8,8 +8,7 @@ let expenseTypesDatalist = document.querySelector("#expenseTypes")
  * @param {Array} expenseTypesOptions 
  * 
  */
-export function populateExpenseTypesList(expenseTypesOptions) {
-
+export function populateExpenseTypesList(expenseTypesOptions, expenseTypeInput) {
     expenseTypesDatalist.innerHTML = ""
     for (let expenseType of expenseTypesOptions) {
         let option = document.createElement('li');
@@ -19,20 +18,6 @@ export function populateExpenseTypesList(expenseTypesOptions) {
     }
 }
 
-
-
-export function updateExpenseTypes(expenses, expenseTypesOptions) {
-    expenseTypesOptions = [...new Set(expenses.map(expense => expense.type.trim()))]
-    localStorage.setItem("expenseTypesOptions", JSON.stringify(expenseTypesOptions));
-    populateExpenseTypesList(expenseTypesOptions)
-}
-
-export function displayExpenseTypesOptions(expenseTypeInput) {
-    expenseTypesDatalist.style.display = "flex";
-
-    // Add a click listener to the document to handle clicks outside
-    document.addEventListener("click", (event) => hideExpenseTypesOptions(event, expenseTypeInput));
-}
 
 export function hideExpenseTypesOptions(event, expenseTypeInput) {
     // Check if the click is outside the datalist and input field
@@ -45,3 +30,20 @@ export function hideExpenseTypesOptions(event, expenseTypeInput) {
         document.removeEventListener("click", hideExpenseTypesOptions); // Clean up the event listener
     }
 }
+
+
+export function updateExpenseTypes(expenses, expenseTypesOptions, expenseTypeInput) {
+    expenseTypesOptions = [...new Set(expenses.map(expense => expense.type.trim()))]
+    localStorage.setItem("expenseTypesOptions", JSON.stringify(expenseTypesOptions));
+    populateExpenseTypesList(expenseTypesOptions, expenseTypeInput)
+}
+
+
+export function displayExpenseTypesOptions(expenseTypeInput) {
+    expenseTypesDatalist.style.display = "flex";
+
+    // Add a click listener to the document to handle clicks outside
+    document.addEventListener("click", (event) => hideExpenseTypesOptions(event, expenseTypeInput));
+}
+
+

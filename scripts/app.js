@@ -61,6 +61,7 @@ let expenseTypesOptions = JSON.parse(localStorage.getItem("expenseTypesOptions")
 
 confirmAddExpense.addEventListener("click", () => {
     addExpense(expenseForm, expenses)
+    updateExpenseTypes(expenses, expenseTypesOptions, expenseTypeInput)
 })
 
 
@@ -96,7 +97,7 @@ expenseTypeInput.addEventListener("click", (event) => {
 });
 
 function initialiseAppContent() {
-    updateExpenseTypes(expenses, expenseTypesOptions)
+    updateExpenseTypes(expenses, expenseTypesOptions, expenseTypeInput)
     populateExpenseList(expenses)
 }
 
