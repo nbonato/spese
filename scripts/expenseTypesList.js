@@ -1,4 +1,15 @@
 let expenseTypesDatalist = document.querySelector("#expenseTypes")
+let expenseTypeInput = document.querySelector("#expenseType")
+
+
+export function initialiseExpenseTypeInput() {
+    expenseTypeInput.addEventListener("click", (event) => {
+        event.stopPropagation(); // Prevent the click event from propagating to the document
+        displayExpenseTypesOptions();
+    });
+}
+
+
 
 
 /**
@@ -8,7 +19,7 @@ let expenseTypesDatalist = document.querySelector("#expenseTypes")
  * @param {Array} expenseTypesOptions 
  * 
  */
-export function populateExpenseTypesList(expenseTypesOptions, expenseTypeInput) {
+export function populateExpenseTypesList(expenseTypesOptions) {
     expenseTypesDatalist.innerHTML = ""
     for (let expenseType of expenseTypesOptions) {
         let option = document.createElement('li');
@@ -19,7 +30,7 @@ export function populateExpenseTypesList(expenseTypesOptions, expenseTypeInput) 
 }
 
 
-export function hideExpenseTypesOptions(event, expenseTypeInput) {
+export function hideExpenseTypesOptions(event) {
     // Check if the click is outside the datalist and input field
     if (
         event.target !== expenseTypesDatalist &&
@@ -32,18 +43,18 @@ export function hideExpenseTypesOptions(event, expenseTypeInput) {
 }
 
 
-export function updateExpenseTypes(expenses, expenseTypesOptions, expenseTypeInput) {
+export function updateExpenseTypes(expenses, expenseTypesOptions) {
     expenseTypesOptions = [...new Set(expenses.map(expense => expense.type.trim()))]
     localStorage.setItem("expenseTypesOptions", JSON.stringify(expenseTypesOptions));
-    populateExpenseTypesList(expenseTypesOptions, expenseTypeInput)
+    populateExpenseTypesList(expenseTypesOptions)
 }
 
 
-export function displayExpenseTypesOptions(expenseTypeInput) {
+export function displayExpenseTypesOptions() {
     expenseTypesDatalist.style.display = "flex";
 
     // Add a click listener to the document to handle clicks outside
-    document.addEventListener("click", (event) => hideExpenseTypesOptions(event, expenseTypeInput));
+    document.addEventListener("click", (event) => hideExpenseTypesOptions(event));
 }
 
 

@@ -1,5 +1,5 @@
 import { populateExpenseList } from './expenseList.js';
-import { displayExpenseTypesOptions, updateExpenseTypes } from './expenseTypesList.js';
+import { initialiseExpenseTypeInput, updateExpenseTypes } from './expenseTypesList.js';
 import { addExpense } from './manageExpense.js';
 import { clearExpenses, exportExpenses, importExpenses, initializeExpenses } from './storage.js';
 
@@ -61,7 +61,7 @@ let expenseTypesOptions = JSON.parse(localStorage.getItem("expenseTypesOptions")
 
 confirmAddExpense.addEventListener("click", () => {
     addExpense(expenseForm, expenses)
-    updateExpenseTypes(expenses, expenseTypesOptions, expenseTypeInput)
+    updateExpenseTypes(expenses, expenseTypesOptions, )
 })
 
 
@@ -89,15 +89,12 @@ importModal.querySelector(".confirm").addEventListener("click", () => {
 });
 
 
-let expenseTypeInput = document.querySelector("#expenseType")
 
-expenseTypeInput.addEventListener("click", (event) => {
-    event.stopPropagation(); // Prevent the click event from propagating to the document
-    displayExpenseTypesOptions(expenseTypeInput);
-});
+
 
 function initialiseAppContent() {
-    updateExpenseTypes(expenses, expenseTypesOptions, expenseTypeInput)
+    initialiseExpenseTypeInput()
+    updateExpenseTypes(expenses, expenseTypesOptions)
     populateExpenseList(expenses)
 }
 
