@@ -1,6 +1,10 @@
 import { populateExpenseList } from './expenseList.js';
-import { addExpense, convertFormToExpense, updateExpense } from './manageExpense.js';
-import { initializeExpenses, clearExpenses, exportExpenses, importExpenses, refreshExpenseTypes } from './storage.js';
+import { displayExpenseTypesOptions, updateExpenseTypes } from './expenseTypesList.js';
+import { addExpense } from './manageExpense.js';
+import { clearExpenses, exportExpenses, importExpenses, initializeExpenses } from './storage.js';
+
+
+
 
 document.addEventListener("DOMContentLoaded", () => {
     initializeExpenses();
@@ -32,8 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
 let addExpenseButton = document.querySelectorAll(".addExpense")
 let expenseModal = document.querySelector("#expenseModal")
 let expenseForm = document.querySelector("#expenseModal form")
-let expenseTypesDatalist = document.querySelector("#expenseTypes")
-let expensesListTable = document.querySelector("#expensesList tbody")
 
 let confirmAddExpense = document.querySelector("#expenseModal .confirm");
 
@@ -61,10 +63,6 @@ confirmAddExpense.addEventListener("click", () => {
     addExpense(expenseForm, expenses)
 })
 
-/* confirmAddExpense.addEventListener("click", () => {
-    expenses.push(convertFormToExpense(expenseForm))
-    addExpenseToTable(convertFormToExpense(expenseForm))
-}) */
 
 
 jsonImport.addEventListener("change", function() {
@@ -90,60 +88,16 @@ importModal.querySelector(".confirm").addEventListener("click", () => {
 });
 
 
-
-function populateExpenseTypesList() {
-    expenseTypesDatalist.innerHTML = ""
-    localStorage.setItem("expenseTypesOptions", JSON.stringify(expenseTypesOptions));
-
-    for (let expenseType of expenseTypesOptions) {
-        let option = document.createElement('li');
-        option.textContent = expenseType;
-        option.addEventListener("click", () => {expenseTypeInput.value = expenseType})
-        expenseTypesDatalist.appendChild(option)
-    }
-}
-
-
 let expenseTypeInput = document.querySelector("#expenseType")
 
 expenseTypeInput.addEventListener("click", (event) => {
     event.stopPropagation(); // Prevent the click event from propagating to the document
-    displayExpenseTypesOptions();
+    displayExpenseTypesOptions(expenseTypeInput);
 });
 
-function displayExpenseTypesOptions() {
-    expenseTypesDatalist.style.display = "flex";
-
-    // Add a click listener to the document to handle clicks outside
-    document.addEventListener("click", hideExpenseTypesOptions);
-}
-
-function hideExpenseTypesOptions(event) {
-    // Check if the click is outside the datalist and input field
-    if (
-        event.target !== expenseTypesDatalist &&
-        !expenseTypesDatalist.contains(event.target) &&
-        event.target !== expenseTypeInput
-    ) {
-        expenseTypesDatalist.style.display = "none";
-        document.removeEventListener("click", hideExpenseTypesOptions); // Clean up the event listener
-    }
-}
-
-
-
-
-function updateExpenseTypes() {
-    expenseTypesOptions = refreshExpenseTypes(expenses)
-    localStorage.setItem("expenseTypesOptions", JSON.stringify(expenseTypesOptions));
-    populateExpenseTypesList()
-}
-
-
 function initialiseAppContent() {
-    updateExpenseTypes()
+    updateExpenseTypes(expenses, expenseTypesOptions)
     populateExpenseList(expenses)
-    populateExpenseTypesList()
 }
 
 initialiseAppContent()
