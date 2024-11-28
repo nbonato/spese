@@ -1,8 +1,7 @@
 
-const CACHE_VERSION = "v1";
+const CACHE_VERSION = "v3";
 
 
-// Triggered when the sw is installed, happens once per update
 self.addEventListener("install", event => {
     console.log("Service worker installed");
     // On installation, create a cache
@@ -13,40 +12,24 @@ self.addEventListener("install", event => {
                 cache.addAll([
                     "./",
                     "./index.html",
+                    "./manifest.json",
+                    "./icons/favicon.svg",
+                    "./icons/icon-192x192.png",
+                    "./icons/icon-512x512.png",
+                    "./icons/icon.svg",
+                    "./icons/maskable-icon.png",
+                    "./scripts/app.js",
+                    "./scripts/chart.min.js",
+                    "./scripts/expenseList.js",
+                    "./scripts/expenseTypesList.js",
+                    "./scripts/manageExpense.js",
+                    "./scripts/overviews.js",
+                    "./scripts/storage.js",
                     "./styles/style.css"
                 ]),
             ),
     );
 });
-
-/* self.addEventListener("install", event => {
-    console.log("Service worker installed");
-    // On installation, create a cache
-    event.waitUntil(
-        caches
-            .open(CACHE_VERSION)
-            .then((cache) =>
-                cache.addAll([
-                    "/",
-                    "/index.html",
-                    "/manifest.json",
-                    "/icons/favicon.svg",
-                    "/icons/icon-192x192.png",
-                    "/icons/icon-512x512.png",
-                    "/icons/icon.svg",
-                    "/icons/maskable-icon.png",
-                    "/scripts/app.js",
-                    "/scripts/chart.min.js",
-                    "/scripts/expenseList.js",
-                    "/scripts/expenseTypesList.js",
-                    "/scripts/manageExpense.js",
-                    "/scripts/overviews.js",
-                    "/scripts/storage.js",
-                    "/styles/style.css"
-                ]),
-            ),
-    );
-}); */
 
 
 // Activates only after the installation (once updated, the sw is re-installed)
