@@ -11,8 +11,8 @@ self.addEventListener("install", event => {
             .open(CACHE_VERSION)
             .then((cache) =>
                 cache.addAll([
-                    "/",
-                    "/index.html",
+                    "./",
+                    "./index.html",
                     "./styles.style.css"
                 ]),
             ),
