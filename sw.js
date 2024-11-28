@@ -1,5 +1,5 @@
 
-const CACHE_VERSION = "v2";
+const CACHE_VERSION = "v1";
 
 
 // Triggered when the sw is installed, happens once per update
@@ -12,7 +12,8 @@ self.addEventListener("install", event => {
             .then((cache) =>
                 cache.addAll([
                     "/",
-                    "/index.html"
+                    "/index.html",
+                    "./styles.style.css"
                 ]),
             ),
     );
@@ -67,7 +68,10 @@ self.addEventListener("activate", (event) => {
 });
 
 
-// Triggered by HTTP requests
+// Triggered by HTTP requests, this creates a cache
+// containing each resource that's requested during execution
+// It might be necessary to change caching strategy to cache
+// resources that are not always requested
 self.addEventListener("fetch", (event) => {
     event.respondWith(
       (async () => {
@@ -76,11 +80,11 @@ self.addEventListener("fetch", (event) => {
         if (r) {
           return r;
         }
-        const response = await fetch(event.request);
+/*         const response = await fetch(event.request);
         const cache = await caches.open(CACHE_VERSION);
         console.log(`[Service Worker] Caching new resource: ${event.request.url}`);
         cache.put(event.request, response.clone());
-        return response;
+        return response; */
       })(),
     );
   });
