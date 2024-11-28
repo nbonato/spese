@@ -13,7 +13,7 @@ self.addEventListener("install", event => {
                 cache.addAll([
                     "./",
                     "./index.html",
-                    "./styles.style.css"
+                    "./styles/style.css"
                 ]),
             ),
     );
