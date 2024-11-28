@@ -2,10 +2,14 @@ import { updateMonthlyExpensesDisplay } from "./overviews.js";
 
 export function populateExpenseList(expenses) {
     document.querySelector("#expensesList tbody").innerHTML = ""
-    for (let expense of expenses) {
-        addExpenseToTable(expense, expenses)
+
+    if (expenses.length > 0) {
+        for (let expense of expenses) {
+            addExpenseToTable(expense, expenses)
+        }
+        updateMonthlyExpensesDisplay(expenses)
     }
-    updateMonthlyExpensesDisplay(expenses)
+
 }
 
 
