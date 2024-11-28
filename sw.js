@@ -12,6 +12,21 @@ self.addEventListener("install", event => {
             .then((cache) =>
                 cache.addAll([
                     "/",
+                    "/index.html"
+                ]),
+            ),
+    );
+});
+
+/* self.addEventListener("install", event => {
+    console.log("Service worker installed");
+    // On installation, create a cache
+    event.waitUntil(
+        caches
+            .open(CACHE_VERSION)
+            .then((cache) =>
+                cache.addAll([
+                    "/",
                     "/index.html",
                     "/manifest.json",
                     "/icons/favicon.svg",
@@ -30,7 +45,7 @@ self.addEventListener("install", event => {
                 ]),
             ),
     );
-});
+}); */
 
 
 // Activates only after the installation (once updated, the sw is re-installed)
