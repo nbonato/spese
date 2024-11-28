@@ -1,5 +1,5 @@
 
-const CACHE_VERSION = "v1";
+const CACHE_VERSION = "v2";
 
 
 // Triggered when the sw is installed, happens once per update
