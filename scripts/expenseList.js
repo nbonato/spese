@@ -5,14 +5,22 @@ import { expenseDateTime, updateTotalMonthlyExpensesDisplay } from "./overviews.
  * Compare function that uses the expenseDateTime function 
  * to extract the datetime from each expense and sort 
  * the expenses array based on that. 
- * 
  * Must be used as argument of the sort() method.
- * 
- * Sorts in reverse order (most recent at the top).
+ * Sorts in reverse order (most recent at the top) and 
+ * falls back to ID if same date (most recently added at top).
  * 
  */
 function sortByDate(a, b) {
-    return expenseDateTime(b) - expenseDateTime(a) 
+    let compare = expenseDateTime(b) - expenseDateTime(a) 
+    if (compare != 0) {
+        return compare
+    } else {
+        // In case both expenses have the same date
+        // compare the ID, which is a UNIX timestamp of when
+        // the expense was added, so that the most 
+        // recently added expense is at the top.
+        return b.id - a.id
+    }
 }
 
 
