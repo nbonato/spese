@@ -8,20 +8,24 @@
 let expenseDisplay = document.querySelector("#overview-display")
 
 
-function expenseMonth(expense) {
+export function expenseMonth(expense) {
     return new Date(expense.date).getMonth() + 1
 }
 
-function expenseDay(expense) {
+export function expenseDateTime(expense) {
+    return new Date(expense.date)
+}
+
+export function expenseDay(expense) {
     return new Date(expense.date).getDay()
 }
 
-window.expenseDay = expenseDay;
 
-window.expenseMonth = expenseMonth;
-window.testExpenses = JSON.parse(localStorage.getItem("expenses"))
-
-export function updateMonthlyExpensesDisplay(expenses) {
+/**
+ * Updates the text (most importantly the value) displayed in the
+ * "Total expenses this month" text.
+ */
+export function updateTotalMonthlyExpensesDisplay(expenses) {
     let grouped = Object.groupBy(expenses, expenseMonth);
     grouped = grouped[new Date().getMonth()+1]
     categoriseExpenses(expenses)
