@@ -28,7 +28,6 @@ export function expenseDay(expense) {
 export function updateTotalMonthlyExpensesDisplay(expenses) {
     let grouped = groupExpensesMonthly(expenses);
     categoriseExpenses(grouped)
-    expenseDisplay.querySelector(".total").textContent = `Total expenses this month: ${sumProperty(grouped).toFixed(2)}`
 }
 
 function groupExpensesMonthly(expenses) {
@@ -37,9 +36,10 @@ function groupExpensesMonthly(expenses) {
     return grouped
 }
 
-function categoriseExpenses(expenses) {
 
-    const categorised = Object.groupBy(expenses, ({ type }) => type.trim());
+function categoriseExpenses(grouped) {
+
+    const categorised = Object.groupBy(grouped, ({ type }) => type.trim());
     // Iterate over each category and sum the property
     // First, create an array of [category, total] pairs and sort it by total
     const sortedCategories = Object.entries(categorised).map(([category, expensesArray]) => {
@@ -47,12 +47,14 @@ function categoriseExpenses(expenses) {
         return [category, total];
     }).sort((a, b) => b[1] - a[1]);  // Sort in descending order by total (b[1] - a[1])
 
-    updateCategoriesTable(sortedCategories);
+    expenseDisplay.querySelector(".total").textContent = `Total expenses this month: ${sumProperty(grouped).toFixed(2)}`
+
+    updateCategoriesTable(sortedCategories, grouped);
 
 }
 
 
-function updateCategoriesTable(sortedCategories) {
+function updateCategoriesTable(sortedCategories, grouped) {
     const categoriesTable = document.querySelector("#categories tbody");
     categoriesTable.innerHTML = ""
 
@@ -72,12 +74,33 @@ function updateCategoriesTable(sortedCategories) {
         categoriesRow.appendChild(typeTd);
         categoriesRow.appendChild(amountTd);
 
+        categoriesRow.addEventListener("click", (event) => toggleCategory(event, total, grouped))
         // Append the row to the table 
         categoriesTable.appendChild(categoriesRow)
     }  
 }
 
 
+
+/* function findCategory(array, category) {
+    for (let [index, element] of array.entries()) {
+        if (element[0] == category) {
+            return index
+        }
+    }
+    return false
+} */
+
+function toggleCategory(event, total, grouped) {
+    const classes = event.target.parentNode.classList;
+    classes.toggle("excluded-category");
+
+
+USE A SPAN TO CONTAIN THE TOTAL NUMBER SO THEN I CAN EXTRACT IT AND REPLACE IT WITH THE RIGHT ONE
+
+    // const spliced = sortedCategories.toSpliced(findCategory(sortedCategories, category), 1);
+    
+}
 
 /**
  * Takes an array and returns the sum of values for a specified property,

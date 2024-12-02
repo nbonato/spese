@@ -231,3 +231,8 @@ h1::before {
         border: 0;
     }
 }
+
+
+table tr.excluded-category {
+    opacity: 0.75;
+}
