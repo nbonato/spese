@@ -30,7 +30,9 @@ export function updateMonthlyExpensesDisplay(expenses) {
 
 
 function categoriseExpenses(expenses) {
-    const categorised = Object.groupBy(expenses, ({ type }) => type.trim());
+    let grouped = Object.groupBy(expenses, expenseMonth);
+    grouped = grouped[new Date().getMonth()+1]
+    const categorised = Object.groupBy(grouped, ({ type }) => type.trim());
     // Iterate over each category and sum the property
 
     // First, create an array of [category, total] pairs and sort it by total
