@@ -1,16 +1,36 @@
-import { updateMonthlyExpensesDisplay } from "./overviews.js";
+import { expenseDateTime, updateTotalMonthlyExpensesDisplay } from "./overviews.js";
+
+
+/**
+ * Compare function that uses the expenseDateTime function 
+ * to extract the datetime from each expense and sort 
+ * the expenses array based on that. 
+ * 
+ * Must be used as argument of the sort() method.
+ * 
+ * Sorts in reverse order (most recent at the top).
+ * 
+ */
+function sortByDate(a, b) {
+    return expenseDateTime(b) - expenseDateTime(a) 
+}
+
+
+
 
 export function populateExpenseList(expenses) {
     document.querySelector("#expensesList tbody").innerHTML = ""
+        if (expenses.length > 0) {
+            expenses.sort(sortByDate)
 
-    if (expenses.length > 0) {
-        for (let expense of expenses) {
-            addExpenseToTable(expense, expenses)
+            for (let expense of expenses) {
+                addExpenseToTable(expense, expenses)
+            }
+            updateTotalMonthlyExpensesDisplay(expenses)    
         }
-        updateMonthlyExpensesDisplay(expenses)
-    }
-
+    
 }
+
 
 
 /**
@@ -54,11 +74,7 @@ export function addExpenseToTable(expense, expenses) {
     expenseListRow.appendChild(amountTd);
     expenseListRow.appendChild(dateTd);
 
-
-    // expenseListRow.addEventListener("click", () => editExpense(expense, expenses))
-
-
-    // Adppend the row to the table 
+    // Append the row to the table 
     expensesListTable.appendChild(expenseListRow)
 }
 
