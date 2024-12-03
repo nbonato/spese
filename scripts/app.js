@@ -3,8 +3,16 @@ import { initialiseExpenseTypeInput, updateExpenseTypes } from './expenseTypesLi
 import { addExpense } from './manageExpense.js';
 import { clearExpenses, exportExpenses, importExpenses, initializeExpenses } from './storage.js';
 
-
-
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').then(() => {
+            console.log('Service Worker registered successfully!');
+        }).catch((error) => {
+            console.log('Service Worker registration failed:', error);
+        });
+    });
+}  
+  
 
 document.addEventListener("DOMContentLoaded", () => {
     initializeExpenses();
