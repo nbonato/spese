@@ -28,6 +28,7 @@ export function expenseDay(expense) {
 export function updateTotalMonthlyExpensesDisplay(expenses) {
     let grouped = groupExpensesMonthly(expenses);
     categoriseExpenses(grouped)
+    
 }
 
 function groupExpensesMonthly(expenses) {
@@ -37,28 +38,27 @@ function groupExpensesMonthly(expenses) {
 }
 
 
-function categoriseExpenses(grouped) {
 
+function categoriseExpenses(grouped) {
     const categorised = Object.groupBy(grouped, ({ type }) => type.trim());
     // Iterate over each category and sum the property
     // First, create an array of [category, total] pairs and sort it by total
     const sortedCategories = Object.entries(categorised).map(([category, expensesArray]) => {
-        const total = sumProperty(expensesArray);
+        const total = sumPropertyArray(expensesArray);
         return [category, total];
     }).sort((a, b) => b[1] - a[1]);  // Sort in descending order by total (b[1] - a[1])
-
-    expenseDisplay.querySelector(".total").textContent = `Total expenses this month: ${sumProperty(grouped).toFixed(2)}`
-
     updateCategoriesTable(sortedCategories, grouped);
-
+    updateTotalMonthlyExpensesText(sumValuesArray(sortedCategories, 1).toFixed(2))
 }
 
 
 function updateCategoriesTable(sortedCategories, grouped) {
     const categoriesTable = document.querySelector("#categories tbody");
     categoriesTable.innerHTML = ""
-
-    // Iterate through the sorted array and append to the table
+    let categoriesObject = Object.fromEntries(
+        sortedCategories.map(([key, value]) => [key, { amount: value }])
+    );
+        // Iterate through the sorted array and append to the table
     for (const [category, total] of sortedCategories) {
         let categoriesRow = document.createElement('tr')
         // Create a td for each property and set its textContent
@@ -73,8 +73,8 @@ function updateCategoriesTable(sortedCategories, grouped) {
         // Append each td to the categoriesRow
         categoriesRow.appendChild(typeTd);
         categoriesRow.appendChild(amountTd);
-
-        categoriesRow.addEventListener("click", (event) => toggleCategory(event, total, grouped))
+        categoriesObject[category]["exclude"] = false
+        categoriesRow.addEventListener("click", (event) => toggleCategory(event, category, categoriesObject))
         // Append the row to the table 
         categoriesTable.appendChild(categoriesRow)
     }  
@@ -91,19 +91,19 @@ function updateCategoriesTable(sortedCategories, grouped) {
     return false
 } */
 
-function toggleCategory(event, total, grouped) {
+function toggleCategory(event, category, categoriesObject) {
     const classes = event.target.parentNode.classList;
-    classes.toggle("excluded-category");
-
-
-USE A SPAN TO CONTAIN THE TOTAL NUMBER SO THEN I CAN EXTRACT IT AND REPLACE IT WITH THE RIGHT ONE
-
-    // const spliced = sortedCategories.toSpliced(findCategory(sortedCategories, category), 1);
+    categoriesObject[category]["exclude"] = classes.toggle("excluded-category");
     
+    const totalAmount = Object.values(categoriesObject).reduce((sum, item) => {
+        return item.exclude ? sum : sum + item.amount;
+    }, 0);    
+
+    updateTotalMonthlyExpensesText(totalAmount.toFixed(2))    
 }
 
 /**
- * Takes an array and returns the sum of values for a specified property,
+ * Takes an array of objects and returns the sum of values for a specified property,
  * rounded to 2 decimal places
  * 
  * @param {Array} array     Array of objects for which a property needs to be summed 
@@ -111,6 +111,33 @@ USE A SPAN TO CONTAIN THE TOTAL NUMBER SO THEN I CAN EXTRACT IT AND REPLACE IT W
  * @returns {Number}        Sum of properties with the specified name, rounded to
  *                          2 decimal places
  */
-function sumProperty(array, propertyName = "amount") {
+function sumPropertyArray(array, propertyName = "amount") {
     return Math.round(array.reduce((n, obj) => n + obj[propertyName], 0) * 100) / 100;
+}
+
+/**
+ * Takes an array and sums its values. Optionally, it sums the nth value of 
+ * each sub-array in an array
+ * 
+ * @param {Array} array 
+ * @param {Number} index    Optional - if specified, the function returns the sum of
+ *                          nth values of the sub-arrays in the array
+ */
+function sumValuesArray(array, index = 0) {
+    let sum = 0
+    if (index == 0) {
+        for (let element of array) {
+            sum += element
+        }
+    } else {
+        for (let element of array) {
+            sum += element[index]
+        }
+    }
+    return sum
+}
+
+
+function updateTotalMonthlyExpensesText(totalMonthlyExpenses) {
+    expenseDisplay.querySelector(".total").textContent = `Total expenses this month: ${totalMonthlyExpenses}`
 }
