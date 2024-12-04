@@ -70,6 +70,7 @@ let expenseTypesOptions = JSON.parse(localStorage.getItem("expenseTypesOptions")
 confirmAddExpense.addEventListener("click", () => {
     addExpense(expenseForm, expenses)
     updateExpenseTypes(expenses, expenseTypesOptions, )
+    
 })
 
 
