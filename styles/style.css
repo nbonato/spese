@@ -178,11 +178,11 @@ h1::before {
     h1::before {
         filter: invert(100%);
     }
-    #expensesList tr:nth-child(2n) {
+    table tr:nth-child(2n) {
         background-color: rgb(56, 56, 56);
     }
 
-    #expensesList thead {
+    thead {
         background-color: rgb(16, 16, 16);
     }
 
