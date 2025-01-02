@@ -7,6 +7,24 @@
 
 let expenseDisplay = document.querySelector("#overview-display")
 
+let changeMonthOffsetButtons = document.querySelectorAll(".changeMonthOffset")
+
+
+changeMonthOffsetButtons.forEach(button => {
+    let monthOffset = 0
+    button.addEventListener("click", () => {
+        // Set default date for new expense to today
+        switch (button.id) {
+            case "increaseMonthOffset":
+                monthOffset += 1
+                break
+            case "decreaseMonthOffset":
+                monthOffset -= 1
+                break
+        }
+        updateTotalMonthlyExpensesDisplay(JSON.parse(localStorage.getItem("expenses")), monthOffset)
+    });
+});
 
 export function expenseMonth(expense) {
     return new Date(expense.date).getMonth() + 1
@@ -25,21 +43,25 @@ export function expenseDay(expense) {
  * Updates the text (most importantly the value) displayed in the
  * "Total expenses this month" text.
  */
-export function updateTotalMonthlyExpensesDisplay(expenses) {
-    let grouped = groupExpensesMonthly(expenses);
-    categoriseExpenses(grouped)
-    
+export function updateTotalMonthlyExpensesDisplay(expenses, monthOffset = 0) {
+    let grouped = groupExpensesMonthly(expenses, monthOffset);
+    categoriseExpenses(grouped, monthOffset)
 }
 
-function groupExpensesMonthly(expenses) {
+
+function groupExpensesMonthly(expenses, monthOffset) {
     let grouped = Object.groupBy(expenses, expenseMonth);
-    grouped = grouped[new Date().getMonth()+1]
+    let month = new Date().getMonth()+ monthOffset + 1
+    if (month <= 0) {
+        month = 12 + month
+    }
+    grouped = grouped[month]
     return grouped
 }
 
 
 
-function categoriseExpenses(grouped) {
+function categoriseExpenses(grouped, monthOffset) {
     const categorised = Object.groupBy(grouped, ({ type }) => type.trim());
     // Iterate over each category and sum the property
     // First, create an array of [category, total] pairs and sort it by total
@@ -48,7 +70,7 @@ function categoriseExpenses(grouped) {
         return [category, total];
     }).sort((a, b) => b[1] - a[1]);  // Sort in descending order by total (b[1] - a[1])
     updateCategoriesTable(sortedCategories, grouped);
-    updateTotalMonthlyExpensesText(sumValuesArray(sortedCategories, 1).toFixed(2))
+    updateTotalMonthlyExpensesText(sumValuesArray(sortedCategories, 1).toFixed(2), monthOffset)
 }
 
 
@@ -138,6 +160,10 @@ function sumValuesArray(array, index = 0) {
 }
 
 
-function updateTotalMonthlyExpensesText(totalMonthlyExpenses) {
-    expenseDisplay.querySelector(".total").textContent = `Total expenses this month: ${totalMonthlyExpenses}`
+function updateTotalMonthlyExpensesText(totalMonthlyExpenses, monthOffset = 0) {
+    const date = new Date();
+    date.setDate(1); // Take the first day of this month to avoid issues with setMonth
+    date.setMonth(date.getMonth()+monthOffset); // Change the month based on the offset
+    const month = date.toLocaleString('default', { month: 'long' });
+    expenseDisplay.querySelector(".total").textContent = `Total expenses in ${month}: ${totalMonthlyExpenses}`
 }
