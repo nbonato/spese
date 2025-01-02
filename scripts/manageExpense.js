@@ -1,4 +1,4 @@
-import { populateExpenseList } from "./expenseList.js";
+import { addExpenseToTable, populateExpenseList } from "./expenseList.js";
 
 // Mapping object
 const fieldMapping = {
@@ -13,7 +13,6 @@ export function addExpense(expenseForm, expenses) {
     expenses.push(expense)
     localStorage.setItem("expenses", JSON.stringify(expenses));
     populateExpenseList(expenses)
-    
 }
 
 export function updateExpense(event, expense, index, expenses, expenseTypesOptions) {
