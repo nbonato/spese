@@ -10,12 +10,15 @@ let expenseDisplay = document.querySelector("#overview-display")
 let changeMonthOffsetButtons = document.querySelectorAll(".changeMonthOffset")
 
 
+// Temporary solution, there should be a variable for the current month displayed
+let monthOffset = 0
+
 changeMonthOffsetButtons.forEach(button => {
-    let monthOffset = 0
     button.addEventListener("click", () => {
         // Set default date for new expense to today
         switch (button.id) {
             case "increaseMonthOffset":
+                console.log(monthOffset)
                 monthOffset += 1
                 break
             case "decreaseMonthOffset":
@@ -55,6 +58,7 @@ function groupExpensesMonthly(expenses, monthOffset) {
     if (month <= 0) {
         month = 12 + month
     }
+    console.log(grouped, month)
     grouped = grouped[month]
     return grouped
 }
