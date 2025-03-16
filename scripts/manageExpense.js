@@ -46,6 +46,7 @@ export function convertFormToExpense(expenseForm) {
     // Parse the form data into an expense object
     let formData = new FormData(expenseForm);
     let expense = {
+        // Use UNIX timestamp as id
         "id" : Date.now(),
         "name" : formData.get("expenseName"),
         "type" : formData.get("expenseType").toLowerCase(),
