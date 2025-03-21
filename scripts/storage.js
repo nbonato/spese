@@ -10,6 +10,7 @@ export function clearExpenses() {
     localStorage.removeItem("expenses");
 }
 
+
 // Export expenses data as a downloadable JSON file
 export function exportExpenses() {
     const expenses = localStorage.getItem("expenses");
@@ -18,7 +19,8 @@ export function exportExpenses() {
 
     const downloadLink = document.createElement("a");
     downloadLink.href = url;
-    downloadLink.download = "expenses.json";
+
+    downloadLink.download = `expenses_${new Date().toLocaleDateString()}.json`;
     downloadLink.click();
 
     URL.revokeObjectURL(url);
