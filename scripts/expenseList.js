@@ -28,14 +28,14 @@ function sortByDate(a, b) {
 
 export function populateExpenseList(expenses) {
     document.querySelector("#expensesList tbody").innerHTML = ""
-        if (expenses.length > 0) {
-            expenses.sort(sortByDate)
+    if (expenses.length > 0) {
+        expenses.sort(sortByDate)
 
-            for (let expense of expenses) {
-                addExpenseToTable(expense, expenses)
-            }
-            updateTotalMonthlyExpensesDisplay(expenses)    
+        for (let expense of expenses) {
+            addExpenseToTable(expense, expenses)
         }
+        updateTotalMonthlyExpensesDisplay(expenses)    
+    }
     
 }
 
