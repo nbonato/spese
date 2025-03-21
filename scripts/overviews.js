@@ -52,13 +52,12 @@ export function updateTotalMonthlyExpensesDisplay(expenses, monthOffset = 0) {
 }
 
 
-function groupExpensesMonthly(expenses, monthOffset) {
+export function groupExpensesMonthly(expenses, monthOffset) {
     let grouped = Object.groupBy(expenses, expenseMonth);
     let month = new Date().getMonth()+ monthOffset + 1
     if (month <= 0) {
         month = 12 + month
     }
-    console.log(grouped, month)
     grouped = grouped[month]
     return grouped
 }
@@ -137,7 +136,7 @@ function toggleCategory(event, category, categoriesObject) {
  * @returns {Number}        Sum of properties with the specified name, rounded to
  *                          2 decimal places
  */
-function sumPropertyArray(array, propertyName = "amount") {
+export function sumPropertyArray(array, propertyName = "amount") {
     return Math.round(array.reduce((n, obj) => n + obj[propertyName], 0) * 100) / 100;
 }
 
