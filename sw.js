@@ -1,5 +1,5 @@
 
-const CACHE_VERSION = "v8";
+const CACHE_VERSION = "280325";
 
 
 self.addEventListener("install", event => {
@@ -12,6 +12,7 @@ self.addEventListener("install", event => {
                 cache.addAll([
                     "./",
                     "./index.html",
+                    "./graphs.html",
                     "./manifest.json",
                     "./icons/favicon.svg",
                     "./icons/icon-192x192.png",
