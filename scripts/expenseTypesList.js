@@ -3,8 +3,7 @@ let expenseTypeInput = document.querySelector("#expenseType")
 
 
 export function initialiseExpenseTypeInput(expenseTypesOptions) {
-    expenseTypeInput.addEventListener("click", (event) => {
-        event.stopPropagation(); // Prevent the click event from propagating to the document
+    expenseTypeInput.addEventListener("focus", (event) => {
         displayExpenseTypesOptions();
     });
     expenseTypeInput.addEventListener("input", (event) => selectExpenseType(event, expenseTypesOptions))

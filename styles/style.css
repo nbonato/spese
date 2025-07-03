@@ -168,6 +168,18 @@ h1::before {
     .portrait {
         display: none;
     }
+
+    #expenseModal input {
+        font-size: 120%;
+        width: 100%;
+    }
+    
+    #expenseModal {
+        font-size: 120%;
+        width: 40vw;
+        border: 0;
+    }
+
 }
 
 @media (prefers-color-scheme: dark) {

@@ -1,5 +1,5 @@
 
-const CACHE_VERSION = "280325";
+const CACHE_VERSION = "03072025";
 
 
 self.addEventListener("install", event => {
